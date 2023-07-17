@@ -11,6 +11,7 @@ import org.acme.api.oas.login.GetListLoginOAS;
 import org.acme.api.oas.login.UpdateLoginOAS;
 import org.acme.model.LoginModel;
 import org.acme.service.LoginService;
+import org.acme.service.UserService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -21,6 +22,7 @@ import org.jboss.resteasy.reactive.RestPath;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Path("/login")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -30,18 +32,41 @@ public class LoginController {
     @Inject
     LoginService loginService;
 
+    @Inject
+    UserService userService;
+
+    @GET
+    @Path("/getData")
+    public Response getDataById(@QueryParam("nik") String nik){
+        JsonObject result = new JsonObject();
+        try {
+            result.put("Status", 200);
+            result.put("Message", "Success");
+            result.put("Payload", loginService.getId(nik));
+            return Response.ok().entity(result).build();
+        } catch (Exception e){
+            result.put("Status", 200);
+            result.put("Message", e.getMessage());
+            result.put("Payload", "Data Kosong");
+            return Response.ok().entity(result).build();
+        }
+    }
+
     @POST
     @Operation(summary = "Absensi")
-    @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AddLoginOAS.Response.class))),
-            @APIResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AddLoginOAS.BadRequest.class)))
-    })
-    public Response login(@QueryParam("user_id") long user_id){
+    public Response login(@QueryParam("nik") String nik){
+        LoginModel loginModel = new LoginModel();
         JsonObject result = new JsonObject();
+        if (loginService.validationLogin(nik).isEmpty()) {
 
-        result.put("status", "Success");
-        result.put("message", "berhasil Absen");
-        result.put("data", loginService.dataLogin(user_id));
+            result.put("Status", 200);
+            result.put("Message", "Success");
+            result.put("Payload", loginService.dataLogin(nik));
+            return Response.ok().entity(result).build();
+        }
+        result.put("Status", 200);
+        result.put("Message", "Anda Sudah Login");
+        result.put("Payload", loginService.validationLogin(nik).get(0));
         return Response.ok().entity(result).build();
     }
 
@@ -68,9 +93,9 @@ public class LoginController {
         JsonObject result = new JsonObject();
         try {
             // Logika bisnis Anda
-            result.put("status", "Success");
-            result.put("message", "berhasil Absen");
-            result.put("data", loginService.getListAll());
+            result.put("Status", "Success");
+            result.put("Message", "berhasil Absen");
+            result.put("Payload", loginService.getListAll());
             return Response.ok().entity(result).build();
         } catch (Exception e) {
             // Tangani kesalahan internal (error 500)

@@ -1,19 +1,15 @@
 package org.acme.service;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.acme.api.dto.LoginDTO;
 import org.acme.model.LoginModel;
 import org.acme.model.UserModel;
 import org.acme.repository.LoginRepository;
 import org.acme.repository.UserRepository;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @ApplicationScoped
@@ -22,17 +18,12 @@ public class LoginService {
     LoginRepository loginRepository;
 
     @Inject
-    UserRepository userRepository;
+    UserService userService;
 
 
     @Transactional
-    public LoginModel dataLogin(long user_id){
-        return loginRepository.persistLogin(user_id);
-    }
-
-
-    public PanacheQuery<UserModel> getNik(String nik){
-        return userRepository.find("nik", nik);
+    public LoginModel dataLogin(String nik){
+        return loginRepository.persistLogin(nik);
     }
 
 //    @Transactional
@@ -43,6 +34,13 @@ public class LoginService {
 //        login.persist();
 //        return login;
 //    }
+    public LoginModel getIdByNik(long user_id){
+        return loginRepository.findIdByNik(user_id);
+    }
+
+    public List getId(String nik){
+        return loginRepository.find("userModel", userService.getOne(nik)).list();
+    }
 
 
     public List<LoginModel> getListAll(){
@@ -52,6 +50,10 @@ public class LoginService {
 
     public List<LoginModel> findDateNow(){
         return loginRepository.find("tanggal", LocalDate.now()).list();
+    }
+
+    public List<LoginModel> validationLogin(String nik){
+        return loginRepository.find("tanggal =?1 and userModel =?2", LocalDate.now(), userService.getOne(nik)).list();
     }
 
     @Transactional
