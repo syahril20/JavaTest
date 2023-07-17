@@ -17,16 +17,16 @@ public class UserRepository implements PanacheRepository<UserModel> {
     @Inject
     EntityManager em;
     @Transactional
-    public UserModel persistUser(AddUserDTO addUserDTO){
+    public UserModel persistUser(String nik, String name){
         UserModel user = new UserModel();
-        user.name = addUserDTO.name;
-        user.nik = addUserDTO.nik;
+        user.nik = nik;
+        user.name = name;
         user.persist();
         return user;
     }
 
     public List<Object[]> getByNik(String nik) {
-        TypedQuery<Object[]> query = em.createQuery("SELECT u.nik, u.name FROM user u WHERE u.nik = :nik", Object[].class);
+        TypedQuery<Object[]> query = em.createQuery("SELECT u.user_id, u.nik, u.name FROM user u WHERE u.nik = :nik", Object[].class);
         query.setParameter("nik", nik);
         return query.getResultList();
     }

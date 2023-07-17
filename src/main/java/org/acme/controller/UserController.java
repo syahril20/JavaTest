@@ -30,27 +30,24 @@ public class UserController {
     UserService userService;
 
     @GET
-    @Path("/nik")
-    @Operation(summary = "Get By Nik")
-    @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = GetListUserOAS.Response.class))),
-            @APIResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = GetListUserOAS.BadRequest.class)))
-    })
-    public Response findByNik(@QueryParam("nik") String nik) {
+    @Path("/id")
+    public Response getIdByNik(@QueryParam("nik") String nik){
         JsonObject result = new JsonObject();
-        result.put("data", userService.findByNik(nik));
+        result.put("Status", 200);
+        result.put("Message", "Success");
+        result.put("Payload", userService.findByNik(nik).get(0).getUserId());
         return Response.ok().entity(result).build();
     }
 
     @GET
-    @Path("/niks")
+    @Path("/nik")
     public Response getByNik(@QueryParam("nik") String nik) {
         JsonObject result = new JsonObject();
         JsonObject payload = new JsonObject();
-
         if (!userService.getByNik(nik).isEmpty()){
-            payload.put("nik", userService.getByNik(nik).get(0)[0]);
-            payload.put("name", userService.getByNik(nik).get(0)[1]);
+            payload.put("user_id", userService.getByNik(nik).get(0)[0]);
+            payload.put("nik", userService.getByNik(nik).get(0)[1]);
+            payload.put("name", userService.getByNik(nik).get(0)[2]);
             result.put("Status", 200);
             result.put("Message", "Success");
             result.put("Payload", payload);
@@ -63,20 +60,35 @@ public class UserController {
     }
 
     @GET
-    @Operation(summary = "Get All User")
-    @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = GetListUserOAS.Response.class))),
-            @APIResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = GetListUserOAS.BadRequest.class)))
-    })
     public Response getUserAll() {
         JsonObject result = new JsonObject();
-        result.put("data", userService.getListAll());
+        result.put("Status", 200);
+        result.put("Message", "Success");
+        result.put("Payload", userService.getListAll());
         return Response.ok().entity(result).build();
     }
 
     @POST
-    public Response insertUser(AddUserDTO userDTO){
-        return Response.ok(userService.dataUser(userDTO)).build();
+    public Response insertUser(@QueryParam("nik") String nik,@QueryParam("name") String name){
+        JsonObject result = new JsonObject();
+        if (!userService.getByNik(nik).isEmpty()){
+            result.put("Status", 500);
+            result.put("Message", "Failed");
+            result.put("Payload", "Data Tersedia");
+            return Response.ok().entity(result).build();
+        }
+        result.put("Status", 200);
+        result.put("Message", "Success");
+        result.put("Payload", userService.dataUser(nik, name));
+        return Response.ok().entity(result).build();
+    }
+
+    @GET
+    @Path("/getOne")
+    public Response getOne(@QueryParam("nik") String nik){
+        JsonObject result = new JsonObject();
+        result.put("data", userService.getOne(nik));
+        return Response.ok().entity(result).build();
     }
 
 }

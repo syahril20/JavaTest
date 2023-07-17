@@ -1,5 +1,6 @@
 package org.acme.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -15,24 +16,25 @@ public class UserService {
     @Inject
     UserRepository userRepository;
 
+    public UserModel getOne(String nik){
+        return userRepository.find("nik", nik).singleResult();
+    }
+
     public List<UserModel> getListAll(){
         List<UserModel> users = userRepository.findAll().list();
         return users;
     }
 
-    public List findByNik(String nik){
+    public List<UserModel> findByNik(String nik){
         return userRepository.find("nik = ?1", nik).list();
     }
-
-    @Inject
-    EntityManager em;
 
     public List<Object[]> getByNik(String nik){
         return userRepository.getByNik(nik);
     }
 
-    public UserModel dataUser(AddUserDTO addUserDTO){
-        return userRepository.persistUser(addUserDTO);
+    public UserModel dataUser(String nik, String name){
+        return userRepository.persistUser(nik, name);
     }
 
 
