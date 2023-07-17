@@ -21,8 +21,6 @@ public class LoginModel extends PanacheEntityBase {
     @Column(name = "login_id")
     public long login_id;
 
-
-
     @Column(name = "absen_masuk")
     public LocalTime absen_masuk;
 
@@ -35,8 +33,9 @@ public class LoginModel extends PanacheEntityBase {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-    
     public UserModel userModel;
+
+
 
 
 

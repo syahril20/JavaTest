@@ -32,33 +32,59 @@ public class LoginController {
 
     @POST
     @Operation(summary = "Absensi")
-    @RequestBody(content = {
-            @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AddLoginOAS.Request.class))
-    })
     @APIResponses(value = {
             @APIResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AddLoginOAS.Response.class))),
             @APIResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AddLoginOAS.BadRequest.class)))
     })
-    public Response login(LoginDTO loginDTO){
+    public Response login(@QueryParam("user_id") long user_id){
         JsonObject result = new JsonObject();
 
         result.put("status", "Success");
         result.put("message", "berhasil Absen");
-        result.put("data", loginService.dataLogin(loginDTO));
+        result.put("data", loginService.dataLogin(user_id));
         return Response.ok().entity(result).build();
     }
 
-    @GET
+//    @POST
+//    @Path("/loginNik")
+//    @Operation(summary = "Absensi")
+//    @APIResponses(value = {
+//            @APIResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AddLoginOAS.Response.class))),
+//            @APIResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AddLoginOAS.BadRequest.class)))
+//    })
+//    public Response loginNik(@QueryParam("nik") String nik){
+//        JsonObject result = new JsonObject();
+//
+//        result.put("status", "Success");
+//        result.put("message", "berhasil Absen");
+//        result.put("data", loginService.persistLoginNik(nik));
+//        return Response.ok().entity(result).build();
+//    }
+
+    @POST
+    @Path("/waw")
     @Operation(summary = "Get All Date")
-    @APIResponses(value = {
-            @APIResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = GetListLoginOAS.Response.class))),
-            @APIResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = GetListLoginOAS.BadRequest.class)))
-    })
     public Response getUserAll() {
         JsonObject result = new JsonObject();
-        result.put("data", loginService.getListAll());
-        return Response.ok().entity(result).build();
+        try {
+            // Logika bisnis Anda
+            result.put("status", "Success");
+            result.put("message", "berhasil Absen");
+            result.put("data", loginService.getListAll());
+            return Response.ok().entity(result).build();
+        } catch (Exception e) {
+            // Tangani kesalahan internal (error 500)
+            result.put("status", "Error");
+            result.put("message", "Terjadi kesalahan internal: " + e.getMessage());
+
+            // Tampilkan pesan kesalahan ke log
+            e.printStackTrace();
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(result).build();
+        }
     }
+
+
 
     @GET
     @Path("/datenow")

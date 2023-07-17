@@ -16,22 +16,17 @@ public class GetListLoginOAS {
         @Schema(name = "data", description = "list of login")
         private List<LoginModel> logins;
 
-        public Response(List<LoginModel> logins) {
-            this.logins = logins;
-        }
-
-        public List<LoginModel> getLogins() {
-            return logins;
-        }
-
-        public void setLogins(List<LoginModel> logins) {
-            this.logins = logins;
-        }
     }
 
     @Schema(name = "GetListLoginOAS.BadRequest")
     public class BadRequest {
         @Schema(example = "Bad Request", enumeration = {"BAD_REQUEST"})
+        public String message;
+    }
+
+    @Schema(name = "GetListLoginOAS.InternalError")
+    public class InternalError {
+        @Schema(example = "Internal Error", enumeration = {"InternalError"})
         public String message;
     }
 }
