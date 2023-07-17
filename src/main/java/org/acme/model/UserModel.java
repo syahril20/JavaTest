@@ -25,7 +25,13 @@ public class UserModel extends PanacheEntityBase {
     @Column(name = "name")
     public String name;
 
+    public String getNik() {
+        return nik;
+    }
 
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
 
 
 
