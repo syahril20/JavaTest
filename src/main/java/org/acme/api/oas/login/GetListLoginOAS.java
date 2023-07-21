@@ -1,7 +1,6 @@
 package org.acme.api.oas.login;
 
-import org.acme.model.LoginModel;
-import org.acme.model.UserModel;
+import org.acme.model.AbsenModel;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public class GetListLoginOAS {
     @Schema(name = "GetListLoginOAS.Response")
     public class Response{
         @Schema(name = "data", description = "list of login")
-        private List<LoginModel> logins;
+        private List<AbsenModel> logins;
 
     }
 
