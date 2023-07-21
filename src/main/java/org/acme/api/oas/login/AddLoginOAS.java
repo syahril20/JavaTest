@@ -1,7 +1,7 @@
 package org.acme.api.oas.login;
 
 import org.acme.api.dto.LoginDTO;
-import org.acme.model.LoginModel;
+import org.acme.model.AbsenModel;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public class AddLoginOAS {
@@ -17,12 +17,12 @@ public class AddLoginOAS {
         @Schema(description = "A message providing additional information about the response", example = "berhasil absen")
         public String message;
         @Schema(name = "data", description = "Absen")
-        public LoginModel loginModel;
+        public AbsenModel absenModel;
 
-        public Response(String status, String message, LoginModel loginModel) {
+        public Response(String status, String message, AbsenModel absenModel) {
             this.status = status;
             this.message = message;
-            this.loginModel = loginModel;
+            this.absenModel = absenModel;
         }
 
     }
