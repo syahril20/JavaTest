@@ -18,21 +18,21 @@ public class AbsenRepository implements PanacheRepository<AbsenModel> {
     UserService userService;
 
     @Transactional
-    public AbsenModel persistLogin(String nik){
-        AbsenModel login = new AbsenModel();
-        login.absenMasuk = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        login.userModel = userService.getOne(nik);
-        System.out.println(login.tanggal);
-        login.persist();
-        return login;
+    public AbsenModel persistAbsen(String nik){
+        AbsenModel absen = new AbsenModel();
+        absen.absenMasuk = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        absen.userModel = userService.getOne(nik);
+        System.out.println(absen.tanggal);
+        absen.persist();
+        return absen;
     }
 
     @Transactional
-    public AbsenModel updateLogin(Long login_id){
-        AbsenModel login = AbsenModel.findById(login_id);
-        login.absenKeluar = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        login.persist(login);
-        return login;
+    public AbsenModel updateAbsen(Long absen_id){
+        AbsenModel absen = AbsenModel.findById(absen_id);
+        absen.absenKeluar = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        absen.persist(absen);
+        return absen;
     }
     @Inject
     EntityManager em;

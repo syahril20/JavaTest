@@ -1,13 +1,13 @@
-package org.acme.api.oas.login;
+package org.acme.api.oas.absen;
 
 import org.acme.model.AbsenModel;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;
 
-public class GetListLoginOAS {
+public class GetListAbsenOAS {
     @Schema(name = "GetListLoginOAS.Request")
-    public class Request extends GetListLoginOAS{
+    public class Request extends GetListAbsenOAS {
     }
 
     @Schema(name = "GetListLoginOAS.Response")

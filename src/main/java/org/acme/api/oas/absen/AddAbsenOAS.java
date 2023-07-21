@@ -1,13 +1,13 @@
-package org.acme.api.oas.login;
+package org.acme.api.oas.absen;
 
-import org.acme.api.dto.LoginDTO;
+import org.acme.api.dto.AbsenDTO;
 import org.acme.model.AbsenModel;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-public class AddLoginOAS {
+public class AddAbsenOAS {
 
     @Schema(name = "AddLoginOAS.Request")
-    public class Request extends LoginDTO {
+    public class Request extends AbsenDTO {
     }
 
     @Schema(name = "AddLoginOAS.Response")

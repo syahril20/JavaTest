@@ -13,8 +13,8 @@ import java.time.LocalTime;
 public class AbsenModel extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "login_id")
-    public long loginId;
+    @Column(name = "absen_id")
+    public long absenId;
 
     @Column(name = "absen_masuk")
     public LocalTime absenMasuk;

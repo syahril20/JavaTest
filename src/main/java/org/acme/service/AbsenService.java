@@ -19,17 +19,17 @@ public class AbsenService {
 
 
     @Transactional
-    public AbsenModel dataLogin(String nik){
-        return absenRepository.persistLogin(nik);
+    public AbsenModel dataAbsen(String nik){
+        return absenRepository.persistAbsen(nik);
     }
 
 //    @Transactional
-//    public LoginModel persistLoginNik(String nik){
-//        LoginModel login = new LoginModel();
-//        login.absen_masuk = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-//        login.userModel = userRepository.find("nik = ?1",nik).list();
-//        login.persist();
-//        return login;
+//    public AbsenModel persistAbsenNik(String nik){
+//        AbsenModel absen = new AbsenModel();
+//        absen.absen_masuk = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+//        absen.userModel = userRepository.find("nik = ?1",nik).list();
+//        absen.persist();
+//        return absen;
 //    }
     public AbsenModel getIdByNik(long user_id){
         return absenRepository.findIdByNik(user_id);
@@ -49,13 +49,13 @@ public class AbsenService {
         return absenRepository.find("tanggal", LocalDate.now()).list();
     }
 
-    public List<AbsenModel> validationLogin(String nik){
+    public List<AbsenModel> validationAbsen(String nik){
         return absenRepository.find("tanggal =?1 and userModel =?2", LocalDate.now(), userService.getOne(nik)).list();
     }
 
     @Transactional
-    public AbsenModel updateLogin(long user_id){
-        return absenRepository.updateLogin(user_id);
+    public AbsenModel updateAbsen(long user_id){
+        return absenRepository.updateAbsen(user_id);
     }
 
     public List<AbsenModel> findDate(LocalDate tanggal){

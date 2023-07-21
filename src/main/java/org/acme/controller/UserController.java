@@ -2,25 +2,10 @@ package org.acme.controller;
 
 import io.vertx.core.json.JsonObject;
 import jakarta.inject.Inject;
-import jakarta.json.Json;
-import jakarta.json.JsonObjectBuilder;
-import jakarta.json.JsonValue;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.acme.api.dto.AddUserDTO;
-import org.acme.api.oas.login.GetListLoginOAS;
-import org.acme.api.oas.user.GetListUserOAS;
-import org.acme.model.UserModel;
 import org.acme.service.UserService;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.media.Content;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
-import org.jboss.resteasy.reactive.RestPath;
-
-import java.util.List;
 
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
